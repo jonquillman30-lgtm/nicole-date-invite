@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nicole's Important Question ❤️</title>
+<style>
+*{
+    box-sizing:border-box;
+}
+body{
+    margin:0;
+    min-height:100vh;
+    overflow:hidden;
+    font-family:Arial,sans-serif;
+    background:linear-gradient(135deg,#ffd1dc,#fff1e6,#f8cdda);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+.card{
+    width:min(92vw,520px);
+    padding:35px;
+    border-radius:25px;
+    text-align:center;
+    background:rgba(255,255,255,.85);
+    backdrop-filter:blur(10px);
+    box-shadow:0 15px 40px rgba(0,0,0,.15);
+    position:relative;
+    z-index:10;
+}
+h1{
+    color:#c2185b;
+}
+p{
+    color:#444;
+}
+button{
+    padding:14px 24px;
+    margin:10px;
+    border:none;
+    border-radius:999px;
+    cursor:pointer;
+    font-size:18px;
+}
+#yesBtn{
+    background:#c2185b;
+    color:white;
+    transition:transform .25s ease;
+}
+#noBtn{
+    background:white;
+    color:#c2185b;
+    border:2px solid #c2185b;
+    position:absolute;
+}
+.hidden{
+    display:none;
+}
+input,
+select{
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+    border-radius:10px;
+    border:1px solid #ddd;
+}
+input[type=range]{
+    width:100%;
+}
+.heart{
+    position:fixed;
+    bottom:-20px;
+    font-size:18px;
+    animation:floatUp linear forwards;
+}
+@keyframes floatUp{
+    from{
+        transform:translateY(0);
+        opacity:1;
+    }
+    to{
+        transform:translateY(-110vh);
+        opacity:0;
+    }
+}
+.confetti{
+    position:fixed;
+    width:10px;
+    height:10px;
+    top:-20px;
+    animation:fall 3s linear forwards;
+}
+@keyframes fall{
+    to{
+        transform:translateY(110vh) rotate(720deg);
+        opacity:0;
+    }
+}
+.final-box{
+    background:rgba(255,255,255,.9);
+    padding:35px;
+    border-radius:25px;
+    text-align:center;
+    max-width:550px;
+    margin:auto;
+}
+.text-link{
+    display:inline-block;
+    margin-top:15px;
+    padding:12px 22px;
+    background:#c2185b;
+    color:white;
+    text-decoration:none;
+    border-radius:999px;
+}
+</style>
+</head>
+<body>
+<div class="card" id="questionCard">
+<h1>Nicole, I Have a Very Important Question ❤️</h1>
+<p>
+Please answer carefully.<br>
+The No button has trust issues.
+</p>
+
+Yes 😍
+No 😅
+
+<p id="counter"></p>
+</div>
+<div class="card hidden" id="dateCard">
+<h1>Excellent Choice 🎉</h1>
+<p>Now let's plan our date.</p>
+<input type="date" id="dateChoice">
+<select id="foodChoice">
+<option value="">Pick a food type...</option>
+<option>Mexican 🌮</option>
+<option>Italian 🍝</option>
+<option>Steakhouse 🥩</option>
+<option>Sushi 🍣</option>
+<option>BBQ 🍖</option>
+<option>Coffee & Dessert ☕🍰</option>
+<option>Breakfast For Dinner 🥞</option>
+<option>Surprise Me 🎲</option>
+</select>
+<p>How excited are you?</p>
+
+<input
+type=“range”
+min=“1”
+max=“10”
+value=“10”
+id=“excitedChoice”
+
+<p id="excitedText">10/10 Obviously 😄</p>
+<button onclick="submitDate()">
+Submit Date Night ❤️
+</button>
+</div>
+<script>
+let misses = 0;
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const counter = document.getElementById("counter");
+const slider = document.getElementById("excitedChoice");
+const sliderText = document.getElementById("excitedText");
+slider.addEventListener("input", () => {
+    sliderText.innerText =
+    slider.value + "/10 excitement level";
+});
+const messages = [
+"",
+"Nice try 😂",
+"Still nope 😆",
+"You seem determined...",
+"The button disagrees.",
+"The universe ships us.",
+"This is getting awkward.",
+"Nicole... just click yes 😏",
+"We are now in boss battle territory.",
+"Fate has spoken."
+];
+function moveNoButton(){
+    misses++;
+    const maxX = window.innerWidth - 140;
+    const maxY = window.innerHeight - 100;
+    noBtn.style.left =
+        Math.random() * maxX + "px";
+    noBtn.style.top =
+        Math.random() * maxY + "px";
+    yesBtn.style.transform =
+        `scale(${1 + misses * 0.1})`;
+    counter.innerText =
+        messages[Math.min(
+            misses,
+            messages.length - 1
+        )];
+}
+noBtn.addEventListener(
+    "mouseover",
+    moveNoButton
+);
+noBtn.addEventListener(
+    "click",
+    moveNoButton
+);
+yesBtn.addEventListener("click", () => {
+document.getElementById("questionCard")
+.classList.add("hidden");
+document.getElementById("dateCard")
+.classList.remove("hidden");
+});
+function createHeart(){
+    const heart =
+        document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "❤️";
+    heart.style.left =
+        Math.random() * 100 + "vw";
+    heart.style.animationDuration =
+        (5 + Math.random()*5) + "s";
+    document.body.appendChild(heart);
+    setTimeout(() => {
+        heart.remove();
+    },10000);
+}
+setInterval(createHeart,500);
+function confetti(){
+    const colors = [
+        "#c2185b",
+        "#ff4081",
+        "#ffd54f",
+        "#81d4fa",
+        "#a5d6a7"
+    ];
+    for(let i=0;i<120;i++){
+        const piece =
+        document.createElement("div");
+        piece.className = "confetti";
+        piece.style.left =
+        Math.random()*100 + "vw";
+        piece.style.background =
+        colors[
+            Math.floor(
+                Math.random()*colors.length
+            )
+        ];
+        document.body.appendChild(piece);
+        setTimeout(() => {
+            piece.remove();
+        },3000);
+    }
+}
+function submitDate(){
+const date =
+document.getElementById("dateChoice").value;
+const food =
+document.getElementById("foodChoice").value;
+const excitement =
+document.getElementById("excitedChoice").value;
+if(!date || !food){
+    alert(
+      "You must pick a date and food ❤️"
+    );
+    return;
+}
+confetti();
+const textMessage =
+encodeURIComponent(
+`Nicole selected:
+Date: ${date}
+Food: ${food}
+Excitement Level: ${excitement}/10 ❤️`
+);
+setTimeout(() => {
+document.body.innerHTML = `
+<div class="final-box">
+<h1>🎉 Date Request Accepted 🎉</h1>
+<h2>${date}</h2>
+<h2>${food}</h2>
+<p>
+Excitement Level:
+<strong>${excitement}/10</strong>
+</p>
+<p>
+Nicole has officially selected
+a date and cuisine.
+</p>
+<p>
+Jonathan is now responsible
+for planning the rest. ❤️
+</p>
+<a
+class="text-link"
+href="sms:?body=${textMessage}"
+>
+Text Jonathan the Results
+</a>
+</div>
+`;
+},1200);
+}
+</script>
+</body>
+<
